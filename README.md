@@ -49,6 +49,8 @@
 
 ### 저장소 복제 
 git clone [https://github.com/doubleTomato/Select_Component.git](https://github.com/doubleTomato/Select_Component.git)
+### 작업 폴더로 이동
+cd Select_Component/select-design
 ### 패키지 설치 
 npm install 
 ### 로컬 개발 서버 실행 (Vite) 
