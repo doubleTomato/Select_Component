@@ -10,10 +10,6 @@ function App() {
 
   const [selectedValue, setSelectedValue] = useState<Option | null>(null);
 
- 
-
-
-
   return (
     <section className='py-20'>
       <div>
@@ -21,7 +17,7 @@ function App() {
         <BaseSelect<Option>
           items={options}
           value={selectedValue}
-          onChange={(val) => setSelectedValue(val as Option)}
+          onChange={(val) => { setSelectedValue(val as Option);}}
           renderTrigger={() => <span>{selectedValue ? selectedValue.label : '과일을 선택해주세요.'}</span>}
           renderItem={(item) => <div className="p-2">{item.label}</div>}
           isItemSelected={(item) => item.id === selectedValue?.id}

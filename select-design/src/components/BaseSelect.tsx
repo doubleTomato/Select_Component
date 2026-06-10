@@ -1,6 +1,6 @@
 // 기본 뼈대 Select
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import type { BaseSelectProps } from "../shared/types/select"
 
 export const BaseSelect = <T,>({
@@ -14,33 +14,64 @@ export const BaseSelect = <T,>({
   isItemSelected,
   closeOnSelect = true,
   renderList,
-  classN=''
-}:BaseSelectProps<T>) => {
-   const [isOpen, setIsOpen] = useState(false);
- return (
-    <div className={`relative mb-20 max-w-fit ${classN}`}>
+  classN = ''
+}: BaseSelectProps<T>) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+      // 다른 곳 클릭 시 닫기
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  return (
+    <div ref={containerRef} className={`relative mb-20 min-w-50 max-w-100 ${classN}`}>
       <button
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
         className={`w-full p-2 border rounded text-left ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
       >
-        {renderTrigger ? renderTrigger() :(value ? String(value) : placeholder)}
+        {renderTrigger ? renderTrigger() : (value ? String(value) : placeholder)}
       </button>
 
-      {renderList ? (renderList(items)) : (
-        isOpen &&
-        <ul className="absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto">
-          {items.map((item, index) => {
-            const isSelected = isItemSelected(item);
-            return <li onClick={()=>{
-                onChange(item);
-                if (closeOnSelect) setIsOpen(false);
-            }} key={index} className={`cursor-pointer hover:bg-gray-50 ${ isSelected ? 'bg-gray-200' : ''}`}>
-              {renderItem ? renderItem(item, isSelected) : null}
-            </li>
-        })}
-        </ul>
+      {isOpen && (
+        renderList ? (
+          renderList(items)
+        ) : (
+          <ul role="listbox" className="absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto">
+            {items.map((item, index) => {
+              const isDisabled = (item as { disabled?: boolean })?.disabled;
+              const isSelected = isItemSelected(item);
+              return (
+                <li
+                  key={index}
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => {
+                    if(isDisabled) return; // 비활성화된 항목은 클릭 무시
+                    onChange(item);
+                    if (closeOnSelect) setIsOpen(false);
+                  }}
+                  className={`cursor-pointer hover:bg-gray-50 ${isSelected ? 'bg-gray-200 hover:bg-gray-200' : ''} ${isDisabled ? 'text-gray-400 cursor-not-allowed bg-gray-100 hover:bg-gray-100' : ''}`}
+                >
+                  {renderItem ? renderItem(item, isSelected) : null}
+                </li>
+              );
+            })}
+          </ul>
+        )
       )}
     </div>
   );

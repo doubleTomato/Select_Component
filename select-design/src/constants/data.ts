@@ -2,20 +2,28 @@ import type { Option } from "../shared/types/select";
 
  export const options: Option[] = [
     { id: '1', label: '사과' },
-    { id: '2', label: '바나나' }
+    { id: '2', label: '바나나' },
+    { id: '3', label: '딸기' },
+    { id: '4', label: '망고', disabled: true },
+    { id: '5', label: '자몽' },
+    { id: '6', label: '용과' },
+    { id: '7', label: '레몬' },
+    { id: '8', label: '포도', disabled: true },
+    { id: '9', label: '리치' },
+    { id: '10', label: '수박', disabled: true },
   ];
 
  export const multiOptions: Option[] = [
     { id: '1', label: '사과' },
     { id: '2', label: '바나나' },
     { id: '3', label: '딸기' },
-    { id: '4', label: '망고' },
+    { id: '4', label: '망고', disabled: true },
     { id: '5', label: '자몽' },
     { id: '6', label: '용과' },
     { id: '7', label: '레몬' },
-    { id: '8', label: '포도' },
+    { id: '8', label: '포도', disabled: true },
     { id: '9', label: '리치' },
-    { id: '10', label: '수박' },
+    { id: '10', label: '수박', disabled: true },
   ];
  export const TreeOption: Option[] = [
   {
