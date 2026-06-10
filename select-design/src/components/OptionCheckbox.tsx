@@ -1,7 +1,6 @@
 import type { Option } from "../shared/types/select"
 
 export const OptionCheckbox = ( { options }: { options: Option } ) => {
-    console.log('??',options);
     return (
         <div className="text-left pl-5 py-2.5 border-b cursor-pointer hover:bg-gray-50">
             <input type="checkbox" name="item[]" value="1"/>

@@ -79,7 +79,7 @@ export const BaseSelect = <T,>({
                     onChange(item);
                     if (closeOnSelect) setIsOpen(false);
                   }}
-                  className={`cursor-pointer hover:bg-gray-50 ${isSelected ? 'bg-gray-200 hover:bg-gray-200' : ''} ${isDisabled ? 'text-gray-400 cursor-not-allowed bg-gray-100 hover:bg-gray-100' : ''}`}
+                  className={`hover:bg-gray-50 ${isSelected ? 'bg-gray-200 hover:bg-gray-200' : ''} ${isDisabled ? 'text-gray-400 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   {renderItem ? renderItem(item, isSelected) : null}
                 </li>

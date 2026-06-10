@@ -19,7 +19,7 @@ const RecursiveTreeNode = ({
   return (
     <div className="text-left">
       <div
-        className="py-2.5 border-b cursor-pointer hover:bg-gray-50 flex items-center"
+        className={`py-2.5 border-b hover:bg-gray-50 flex items-center ${item.disabled ? 'cursor-not-allowed opacity-50 ' : 'cursor-pointer'}`}
         style={{ paddingLeft: `${depth * 20 + 20}px` }} //깊이가 깊어질 때마다 20px
         onClick={(e) => {
           e.stopPropagation(); // 버블링 방지
