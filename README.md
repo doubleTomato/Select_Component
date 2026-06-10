@@ -45,6 +45,16 @@
 - disabled 노드 선택 방지
 - 부모 노드 선택 시  하위 전체 선택 / 전체 해제 기능
 
+## ⚙️ Installation & Running 
+
+### 저장소 복제 
+git clone [https://github.com/doubleTomato/Select_Component.git](https://github.com/doubleTomato/Select_Component.git)
+### 패키지 설치 
+npm install 
+### 로컬 개발 서버 실행 (Vite) 
+npm run dev
+
+
 ## 💡 구현 중 해결한 문제 (Troubleshooting)
 
 ### 1. 의도치 않은 드롭다운 닫힘 방지
