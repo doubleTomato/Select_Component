@@ -21,6 +21,7 @@ export const MultiSelect = ( { options }: { options: Option[] } ) => {
       value={selectedValues}
       onChange={(item) => handleToggle(item as Option)} 
       closeOnSelect={false} // 다중 선택
+      onClear={selectedValues.length > 0 ? () => setSelectedValues([]) : undefined}
       isItemSelected={(item) => { return selectedValues.some(sel => sel.id === item.id);}}
       renderTrigger={() => <p title={selectedItems} className="truncate">{selectedValues.length > 0  ? selectedItems:"과일을 선택해주세요."}</p>}
       renderItem={(item, isSelected) => {

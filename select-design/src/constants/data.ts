@@ -124,6 +124,7 @@ export const multiDepthOptions: Option[] = [
   {
     id: "electronics",
     label: "전자기기 (1 Depth)",
+    disabled: true, // 부모 노드 비활성화 테스트
     children: [
       {
         id: "computer",

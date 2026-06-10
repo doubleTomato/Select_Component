@@ -14,8 +14,9 @@ export const BaseSelect = <T,>({
   isItemSelected,
   closeOnSelect = true,
   renderList,
-  classN = ''
-}: BaseSelectProps<T>) => {
+  classN = '',
+  onClear
+}: BaseSelectProps<T> & { onClear?: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -36,15 +37,29 @@ export const BaseSelect = <T,>({
   }, [isOpen]);
 
   return (
-    <div ref={containerRef} className={`relative mb-20 min-w-50 max-w-100 ${classN}`}>
+    <div ref={containerRef} className={`relative mb-20 min-w-50 max-w-100 group ${classN}`}>
       <button
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full p-2 border rounded text-left ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
+        className={`w-full p-2 border rounded text-left  pr-8 ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
       >
         {renderTrigger ? renderTrigger() : (value ? String(value) : placeholder)}
       </button>
+      {/* 초기화 버튼 */}
+      {onClear && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation(); // 부모 안열리게
+            onClear(); // 지우는 함수 호출
+          }}
+          className="absolute right-2 top-2.5 hidden group-hover:flex items-center justify-center w-5 h-5 bg-gray-200 rounded-full text-gray-500 cursor-pointer  hover:bg-gray-300 text-sm"
+          title="초기화"
+        >
+          ✕
+        </button>
+      )}
 
       {isOpen && (
         renderList ? (

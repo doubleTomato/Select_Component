@@ -18,6 +18,7 @@ function App() {
           items={options}
           value={selectedValue}
           onChange={(val) => { setSelectedValue(val as Option);}}
+          onClear={selectedValue ? () => setSelectedValue(null) : undefined}
           renderTrigger={() => <span>{selectedValue ? selectedValue.label : '과일을 선택해주세요.'}</span>}
           renderItem={(item) => <div className="p-2">{item.label}</div>}
           isItemSelected={(item) => item.id === selectedValue?.id}

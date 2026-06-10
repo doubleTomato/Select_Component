@@ -142,13 +142,14 @@ export const TreeSelect = ({ options }: { options: Option[] }) => {
       onChange={() => {}} // 재귀 컴포넌트에서 관리
       closeOnSelect={false}
       isItemSelected={(item) => selectedValues.some((sel) => sel.id === item.id)}
+      onClear={selectedValues.length > 0 ? () => setSelectedValues([]) : undefined}
       renderTrigger={() => (
-        <p title={selectedItems} className="truncate p-2">
+        <p title={selectedItems} className="truncate">
           {selectedValues.length > 0 ? selectedItems : "항목을 선택해주세요."}
         </p>
       )}
       renderList={(items) => (
-        <div className="max-h-80 overflow-y-auto">
+        <div className="max-h-80 overflow-y-auto z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto ">
           {items.map((item) => (
             <RecursiveTreeNode
               key={item.id}
