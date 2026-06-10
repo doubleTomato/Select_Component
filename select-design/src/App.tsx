@@ -4,7 +4,7 @@ import type { Option } from './shared/types/select';
 import { BaseSelect } from './components/BaseSelect';
 import { MultiSelect } from './components/MultiSelect';
 import { TreeSelect } from './components/TreeSelect';
-import { multiOptions, options, TreeOption, multiDepthOptions } from './constants/data';
+import { multiOptions, options, TreeOption, multiDepthOptions /*, mixedDisabledOptions, middleBlockedOptions*/ } from './constants/data';
 
 function App() {
 
@@ -36,6 +36,12 @@ function App() {
         <h2 className='align-left'>Multi Depth Tree Select</h2>
         <TreeSelect options={multiDepthOptions}/>
       </div>
+
+      {/* test */}
+      {/* <div>
+        <h2 className='align-left'>Multi Depth Tree Select</h2>
+        <TreeSelect options={middleBlockedOptions}/>
+      </div> */}
     </section>
   );
 }

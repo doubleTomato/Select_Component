@@ -146,3 +146,72 @@ export const multiDepthOptions: Option[] = [
     disabled: true,
   },
 ];
+
+/// 테스트 케이스 추가
+// 중간 노드가 활성화되어 있지만 자식 노드가 모두 비활성화된 케이스 (부모는 선택 가능하나 자식이 전멸인 경우)
+export const mixedDisabledOptions: Option[] = [
+  {
+    id: "food",
+    label: "식품 (1 Depth)",
+    children: [
+      {
+        id: "meat",
+        label: "육류 (2 Depth - 모두 품절)",
+        disabled: false, // 부모는 선택 가능하나 자식이 전멸인 케이스
+        children: [
+          { id: "beef", label: "소고기", disabled: true },
+          { id: "pork", label: "돼지고기", disabled: true },
+        ],
+      },
+      {
+        id: "beverage",
+        label: "음료 (2 Depth)",
+        children: [
+          {
+            id: "coffee",
+            label: "커피 (3 Depth)",
+            children: [
+              { id: "americano", label: "아메리카노" },
+              { id: "latte", label: "카페라떼", disabled: true }, // 반만 품절
+            ],
+          },
+          {
+            id: "tea",
+            label: "차 (3 Depth - 전체 품절)",
+            disabled: true, // 중간 노드 자체가 막힌 케이스
+            children: [
+              { id: "green_tea", label: "녹차" },
+              { id: "barley_tea", label: "보리차" },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+// 중간 노드가 막히고 자식은 활성화된 케이스 (중간 노드가 disabled이지만 자식 노드는 disabled가 아닌 경우)
+export const middleBlockedOptions: Option[] = [
+  {
+    id: "sports",
+    label: "스포츠 (1 Depth)",
+    children: [
+      {
+        id: "ball_games",
+        label: "구기종목 (2 Depth - 점검중)",
+        disabled: true, // 중간 다리가 끊어짐
+        children: [
+          { id: "soccer", label: "축구" }, // 자식은 활성화
+          { id: "basketball", label: "농구" },
+        ],
+      },
+      {
+        id: "fitness",
+        label: "헬스 (2 Depth)",
+        children: [
+          { id: "dumbbell", label: "덤벨 운동" },
+        ],
+      },
+    ],
+  },
+];
