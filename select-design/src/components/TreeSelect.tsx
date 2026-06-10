@@ -62,24 +62,37 @@ export const TreeSelect = ({ options }: { options: Option[] }) => {
   const handleToggle = (clickedItem: Option) => {
     if (clickedItem.disabled) return;
 
+    // disabled가 아닌 자손들만 수집 - deps상관없이 찾기
+    const getMutableChildren = (item: Option): Option[] => {
+      let result: Option[] = [];
+      item.children?.forEach((child) => {
+        if (!child.disabled) {
+          result.push(child);
+        }
+        result = [...result, ...getMutableChildren(child)];
+      });
+      return result;
+    };
+
+
     setSelectedValues((prev) => {
       const isAlreadySelected = prev.some((item) => item.id === clickedItem.id);
       
       // 클릭한 부모의 자손을 묶기
-      const itemsToToggle = [clickedItem, ...getAllChildren(clickedItem)];
+      const itemsToToggle = [clickedItem, ...getMutableChildren(clickedItem)];
       let updatedValues = [...prev];
 
       if (isAlreadySelected) {
         updatedValues = updatedValues.filter((p) => !itemsToToggle.some((t) => t.id === p.id));
       } else {
         itemsToToggle.forEach((item) => {
-          if (!updatedValues.some((v) => v.id === item.id) && !item.disabled) {
+          if (!updatedValues.some((v) => v.id === item.id)) {
             updatedValues.push(item);
           }
         });
       }
 
-      // 자식 전부 선택 시 부모 선택
+      // 자식 - 부모 동기화 (재귀적으로 부모까지 검사)
       const syncParents = (currentValues: Option[]): Option[] => {
         let nextVal = [...currentValues];
         let changed = false;
@@ -98,11 +111,19 @@ export const TreeSelect = ({ options }: { options: Option[] }) => {
         findParents(options, parentMap);
 
         parentMap.forEach((parent) => {
+          if (parent.disabled) return; // 부모가 disabled면 리턴
           const children = parent.children || [];
-          const allChildrenSelected = children.every(c => nextVal.some(v => v.id === c.id));
+
+          // disabled가 아닌 자식들만 필터링
+          const mutableChildren = children.filter(c => !c.disabled);
+          
+          if (mutableChildren.length === 0) return;
+
+
+          const allChildrenSelected = mutableChildren.every(c => nextVal.some(v => v.id === c.id));
           const isParentSelected = nextVal.some(v => v.id === parent.id);
 
-          if (allChildrenSelected && !isParentSelected && !parent.disabled) {
+          if (allChildrenSelected && !isParentSelected) {
             nextVal.push(parent);
             changed = true;
           } else if (!allChildrenSelected && isParentSelected) {
