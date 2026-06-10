@@ -1,11 +1,9 @@
 import { useState } from "react";
 import type { Option } from '../shared/types/select';
 import { BaseSelect } from "./BaseSelect";
-// MultiSelect.tsx
-export const MultiSelect = ( options ) => {
-  const [selectedValues, setSelectedValues] = useState<Option[]>([]); // 상태가 배열!
+export const MultiSelect = ( { options }: { options: Option[] } ) => {
+  const [selectedValues, setSelectedValues] = useState<Option[]>([]); // 상태 배열로 관리
 
-  // 💡 다중 선택만의 특별한 상태 조작 로직
   const handleToggle = (clickedItem: Option) => {
     setSelectedValues((prev) => {
       const isAlreadySelected = prev.some((item) => item.id === clickedItem.id);
@@ -15,23 +13,21 @@ export const MultiSelect = ( options ) => {
       return [...prev, clickedItem]; // 넣기
     });
   };
-
+  const selectedItems =  selectedValues.map((x) => x.label).join(',');
   return (
     <BaseSelect<Option>
       items={options}
       value={selectedValues}
-      
       onChange={(item) => handleToggle(item as Option)} 
-      
       closeOnSelect={false} // 다중 선택
-      isItemSelected={(item) => {return false; console.log(item)}}
-      
-      renderTrigger={() => <span>{selectedValues.length}개 선택됨</span>}
-      renderItem={(item, isSelected) => 
-        <div>
-            {item.label}
+      isItemSelected={(item) => { return selectedValues.some(sel => sel.id === item.id);}}
+      renderTrigger={() => <p title={selectedItems} className="truncate">{selectedValues.length > 0  ? selectedItems:"과일을 선택해주세요."}</p>}
+      renderItem={(item, isSelected) => {
+        return <div className="text-left pl-5 py-2.5 border-b cursor-pointer hover:bg-gray-50">
+            <input type="checkbox" name="item[]" value="1" checked={isSelected}/>
+            <span className="inline-block ml-2.5">{item.label}</span>
         </div>
-      }
+      }}
     />
   );
 }

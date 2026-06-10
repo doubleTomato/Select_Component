@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { BaseSelectProps } from "../shared/types/select"
 
 export const BaseSelect = <T,>({
-    value,
+  value,
   onChange,
   items,
   disabled = false,
@@ -13,12 +13,12 @@ export const BaseSelect = <T,>({
   renderItem,
   isItemSelected,
   closeOnSelect = true,
-  renderList
+  renderList,
+  classN=''
 }:BaseSelectProps<T>) => {
    const [isOpen, setIsOpen] = useState(false);
-    console.log(value);
  return (
-    <div className="relative w-full max-w-xs">
+    <div className={`relative mb-20 max-w-fit ${classN}`}>
       <button
         type="button"
         disabled={disabled}
@@ -29,6 +29,7 @@ export const BaseSelect = <T,>({
       </button>
 
       {renderList ? (renderList(items)) : (
+        isOpen &&
         <ul className="absolute z-10 w-full mt-1 bg-white border rounded shadow-lg max-h-60 overflow-y-auto">
           {items.map((item, index) => {
             const isSelected = isItemSelected(item);
@@ -36,7 +37,7 @@ export const BaseSelect = <T,>({
                 onChange(item);
                 if (closeOnSelect) setIsOpen(false);
             }} key={index} className={`cursor-pointer hover:bg-gray-50 ${ isSelected ? 'bg-gray-200' : ''}`}>
-              {renderItem ? renderItem(item, false) : null}
+              {renderItem ? renderItem(item, isSelected) : null}
             </li>
         })}
         </ul>

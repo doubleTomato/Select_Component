@@ -18,5 +18,5 @@ export interface BaseSelectProps<T> {
     isItemSelected: (item: T) => boolean; // 선택 되어있는지 체크
     closeOnSelect?: boolean; // 단일은 true / 외는 false 
     renderList?: (items: T[]) => React.ReactNode;
-
+    classN?:string; // 혹시라도 추가되는 class
 }
